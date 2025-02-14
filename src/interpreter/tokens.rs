@@ -21,12 +21,19 @@ pub enum AdvancedTokens {
     Multiplication,
     Division,
     Modulo,
+    AdditionEquals,
+    SubtractionEquals,
+    MultiplicationEquals,
+    DivisionEquals,
+    ModuloEquals,
 
     // Variable
     SetEqualTo,
     MemberOf,
 
     // Formatting
+    Returns,
+    Comma,
     SemiColon,
     OpeningBrace,
     ClosingBrace,
@@ -48,6 +55,7 @@ pub enum AdvancedTokens {
     Use,
     Const,
     Let,
+    Fn,
 
     Identifier(String),
     Integer(String),
