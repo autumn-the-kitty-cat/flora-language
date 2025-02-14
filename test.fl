@@ -1,0 +1,8 @@
+const std = use std;
+
+pub fn _start() -> i32 {
+  const abc: string = "abc\n";
+  std::println("{}", abc);
+  
+  return 0;
+}
