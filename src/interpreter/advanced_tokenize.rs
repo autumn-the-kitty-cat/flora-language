@@ -12,7 +12,7 @@ pub fn advance_tokens(tokens: Vec<SimpleTokens>) -> Vec<AdvancedTokens> {
                 while char_index < chars.len() {
                     match chars[char_index] {
                         '>' => {
-                            if chars.len() > 1 {
+                            if chars.len() - char_index > 1 {
                                 if chars[char_index + 1] == '=' {
                                     advanced_tokens.push(AdvancedTokens::GreaterThanOrEqual);
                                     char_index += 1;
@@ -22,7 +22,7 @@ pub fn advance_tokens(tokens: Vec<SimpleTokens>) -> Vec<AdvancedTokens> {
                             }
                         }
                         '<' => {
-                            if chars.len() > 1 {
+                            if chars.len() - char_index > 1 {
                                 if chars[char_index + 1] == '=' {
                                     advanced_tokens.push(AdvancedTokens::LessThanOrEqual);
                                     char_index += 1;
@@ -32,7 +32,7 @@ pub fn advance_tokens(tokens: Vec<SimpleTokens>) -> Vec<AdvancedTokens> {
                             }
                         }
                         '=' => {
-                            if chars.len() > 1 {
+                            if chars.len() - char_index > 1 {
                                 if chars[char_index + 1] == '=' {
                                     advanced_tokens.push(AdvancedTokens::IsEqual);
                                     char_index += 1;
@@ -42,7 +42,7 @@ pub fn advance_tokens(tokens: Vec<SimpleTokens>) -> Vec<AdvancedTokens> {
                             }
                         }
                         '!' => {
-                            if chars.len() > 1 {
+                            if chars.len() - char_index > 1 {
                                 if chars[char_index + 1] == '=' {
                                     advanced_tokens.push(AdvancedTokens::IsNotEqual);
                                     char_index += 1;
@@ -52,17 +52,72 @@ pub fn advance_tokens(tokens: Vec<SimpleTokens>) -> Vec<AdvancedTokens> {
                             }
                         }
                         ':' => {
-                            if chars.len() > 1 {
+                            if chars.len() - char_index > 1 {
                                 if chars[char_index + 1] == ':' {
                                     advanced_tokens.push(AdvancedTokens::MemberOf);
                                     char_index += 1;
+                                } else {
+                                    todo!();
                                 }
-                            } else {
-                                todo!();
+                            }
+                        }
+                        '+' => {
+                            if chars.len() - char_index > 1 {
+                                if chars[char_index + 1] == '=' {
+                                    advanced_tokens.push(AdvancedTokens::AdditionEquals);
+                                    char_index += 1;
+                                } else {
+                                    advanced_tokens.push(AdvancedTokens::Addition);
+                                }
+                            }
+                        }
+                        '-' => {
+                            if chars.len() - char_index > 1 {
+                                if chars[char_index + 1] == '=' {
+                                    advanced_tokens.push(AdvancedTokens::SubtractionEquals);
+                                    char_index += 1;
+                                } else if chars[char_index + 1] == '>' {
+                                    advanced_tokens.push(AdvancedTokens::Returns);
+                                } else {
+                                    advanced_tokens.push(AdvancedTokens::Subtraction);
+                                }
+                            }
+                        }
+                        '*' => {
+                            if chars.len() - char_index > 1 {
+                                if chars[char_index + 1] == '=' {
+                                    advanced_tokens.push(AdvancedTokens::MultiplicationEquals);
+                                    char_index += 1;
+                                } else {
+                                    advanced_tokens.push(AdvancedTokens::Multiplication);
+                                }
+                            }
+                        }
+                        '/' => {
+                            if chars.len() - char_index > 1 {
+                                if chars[char_index + 1] == '=' {
+                                    advanced_tokens.push(AdvancedTokens::DivisionEquals);
+                                    char_index += 1;
+                                } else {
+                                    advanced_tokens.push(AdvancedTokens::Division);
+                                }
+                            }
+                        }
+                        '%' => {
+                            if chars.len() - char_index > 1 {
+                                if chars[char_index + 1] == '=' {
+                                    advanced_tokens.push(AdvancedTokens::ModuloEquals);
+                                    char_index += 1;
+                                } else {
+                                    advanced_tokens.push(AdvancedTokens::Modulo);
+                                }
                             }
                         }
                         ';' => {
                             advanced_tokens.push(AdvancedTokens::SemiColon);
+                        }
+                        ',' => {
+                            advanced_tokens.push(AdvancedTokens::Comma);
                         }
                         '(' => {
                             advanced_tokens.push(AdvancedTokens::OpeningParentheses);
@@ -137,6 +192,9 @@ pub fn advance_tokens(tokens: Vec<SimpleTokens>) -> Vec<AdvancedTokens> {
                 }
                 "let" => {
                     advanced_tokens.push(AdvancedTokens::Let);
+                }
+                "fn" => {
+                    advanced_tokens.push(AdvancedTokens::Fn);
                 }
                 other_identifier => {
                     advanced_tokens.push(AdvancedTokens::Identifier(other_identifier.to_string()));
