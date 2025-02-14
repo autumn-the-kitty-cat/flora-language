@@ -1,10 +1,15 @@
 use super::tokens::SimpleTokens;
+use crate::util::error;
 use std::{fs, path::Path};
 
 pub fn tokenize_file(file_path_string: String) -> Vec<SimpleTokens> {
     let mut file_path = Path::new(&file_path_string);
-    let contents = fs::read_to_string(file_path).unwrap();
+    let contents = fs::read_to_string(file_path);
+    if contents.is_err() {
+        error("Input file does not exist!".to_string());
+    }
     let characters = contents
+        .unwrap()
         .lines()
         .flat_map(|line| (line.to_string() + "\n").chars().collect::<Vec<char>>())
         .collect::<Vec<char>>();
@@ -21,7 +26,9 @@ pub fn tokenize_file(file_path_string: String) -> Vec<SimpleTokens> {
             token_start_index = token_end_index;
         }
         if characters[token_end_index].is_alphabetic() || characters[token_end_index] == '_' {
-            while characters[token_end_index].is_alphanumeric() || characters[token_end_index] == '_' {
+            while characters[token_end_index].is_alphanumeric()
+                || characters[token_end_index] == '_'
+            {
                 token_end_index += 1;
             }
             let token = characters[token_start_index..token_end_index]
