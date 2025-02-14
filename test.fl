@@ -1,8 +1,8 @@
-const std = use std;
+const std = use std; // import std
 
-pub fn _start() -> i32 {
-  const abc: string = "abc\n";
-  std::println("{}", abc);
+pub fn _start() -> i32 { // start function
+  const abc: string = "abc\n"; // setup string abc
+  std::println("{}", abc); // print abc
   
-  return 0;
+  return 0; // exit with code 0
 }
